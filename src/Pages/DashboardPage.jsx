@@ -1,9 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
+import Loader from "../Components/Shared/Loader";
 import useAuth from "../Hooks/useAuth";
+import usePublicAxios from "../Hooks/usePublicAxios";
 
 const DashboardPage = () => {
   const { user, logOut } = useAuth();
+  const axiosInstance = usePublicAxios();
+  const { data: houses } = useQuery({
+    queryKey: ["houses", user.email],
+    queryFn: async ({ queryKey }) => {
+      const { data } = await axiosInstance.get(
+        `/house/all-houses?email=${queryKey[1]}`
+      );
+      return data;
+    },
+  });
+  if (!houses) return <Loader />;
   return (
     <div>
       <div className="bg-primary py-4 flex items-center justify-between px-10">
@@ -51,15 +65,20 @@ const DashboardPage = () => {
             </p>
             <div className="flex flex-col gap-4 w-full mt-6">
               {/* House  */}
-              <div className="flex items-center justify-around border py-2 rounded-md">
-                <img
-                  className="w-32 h-20 rounded-md"
-                  src="https://i.ibb.co/yNzBYHP/House.jpg"
-                  alt=""
-                />
-                <p>Name</p>
-                <p>50000 BDT</p>
-              </div>
+              {houses.map((house) => (
+                <div
+                  key={house._id}
+                  className="flex items-center justify-around border py-2 rounded-md"
+                >
+                  <img
+                    className="w-32 h-20 rounded-md"
+                    src={house.picture}
+                    alt=""
+                  />
+                  <p className="font-semibold">{house.name}</p>
+                  <p className="font-semibold">{house.rent_per_month} BDT</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex-1 flex justify-center">
