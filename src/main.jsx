@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AddAHousePage from "./Pages/AddAHousePage";
 import DashboardPage from "./Pages/DashboardPage";
+import EditAHousePage from "./Pages/EditAHousePage";
 import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
@@ -47,6 +48,14 @@ const routes = createBrowserRouter([
     element: (
       <UserRoute>
         <AddAHousePage />
+      </UserRoute>
+    ),
+  },
+  {
+    path: "/edit-a-house/:id",
+    element: (
+      <UserRoute>
+        <EditAHousePage />
       </UserRoute>
     ),
   },

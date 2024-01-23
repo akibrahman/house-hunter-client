@@ -1,4 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { FaArrowRight } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 import Loader from "../Components/Shared/Loader";
@@ -68,15 +71,24 @@ const DashboardPage = () => {
               {houses.map((house) => (
                 <div
                   key={house._id}
-                  className="flex items-center justify-around border py-2 rounded-md"
+                  className="flex flex-col border rounded-md"
                 >
-                  <img
-                    className="w-32 h-20 rounded-md"
-                    src={house.picture}
-                    alt=""
-                  />
-                  <p className="font-semibold">{house.name}</p>
-                  <p className="font-semibold">{house.rent_per_month} BDT</p>
+                  <div className="flex items-center justify-around p-4">
+                    <img
+                      className="w-32 h-20 rounded-md"
+                      src={house.picture}
+                      alt=""
+                    />
+                    <p className="font-semibold">{house.name}</p>
+                    <p className="font-semibold">{house.rent_per_month} BDT</p>
+                  </div>
+                  <div className="flex items-center justify-center gap-10 py-5">
+                    <Link to={`/edit-a-house/${house._id}`}>
+                      <TiEdit className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-orange-600 text-4xl p-2 rounded-full" />
+                    </Link>
+                    <MdDelete className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-red-600 text-4xl p-2 rounded-full" />
+                    <FaArrowRight className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-primary text-4xl p-2 rounded-full" />
+                  </div>
                 </div>
               ))}
             </div>
