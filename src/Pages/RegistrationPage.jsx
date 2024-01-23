@@ -1,15 +1,43 @@
 import { useState } from "react";
-import { FaPhoneAlt } from "react-icons/fa";
+import { FaExclamation, FaPhoneAlt } from "react-icons/fa";
 import { FaClipboardUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 
 const RegistrationPage = () => {
   const [role, setRole] = useState("");
+  const [error, setError] = useState("");
+  const handleRegistration = (event) => {
+    event.preventDefault();
+    if (!role) {
+      setError("Identify your Role");
+      return;
+    }
+    const form = event.target;
+    const bdPhoneNumberRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
+    if (!bdPhoneNumberRegex.test(form.phoneNumber.value)) {
+      setError("Enter Bangladeshi phone number");
+      return;
+    }
+    const regexPattern = /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/;
+    if (!regexPattern.test(form.password.value)) {
+      setError("Enter 8 digit password with atlest one number");
+      return;
+    }
+    console.log(form.fullName.value);
+  };
   return (
-    <Container className={"flex items-center justify-center h-screen"}>
+    <Container className={"flex items-center justify-center h-screen relative"}>
+      {error && (
+        <div className="fixed top-8 left-8">
+          <p className="flex items-center gap-1 text-red-700">
+            <FaExclamation />
+            {error}
+          </p>
+        </div>
+      )}
       <div className="w-full mx-auto lg:w-[500px] drop-shadow-lg bg-white shadow-primary">
-        <form className="p-12">
+        <form onSubmit={handleRegistration} className="p-12">
           <h1 className="backdrop-blur-sm text-4xl pb-8">Registration</h1>
           <div className="space-y-5">
             <label htmlFor="fullName" className="block">
@@ -17,7 +45,9 @@ const RegistrationPage = () => {
             </label>
             <div className="relative">
               <input
+                required
                 id="fullName"
+                name="fullName"
                 type="text"
                 placeholder="Your Name"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
@@ -32,7 +62,9 @@ const RegistrationPage = () => {
             </label>
             <div className="relative">
               <input
+                required
                 id="email"
+                name="email"
                 type="email"
                 placeholder="example@gmail.com"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
@@ -75,8 +107,18 @@ const RegistrationPage = () => {
             </label>
             <div className="relative">
               <input
+                required
                 id="phoneNumber"
-                type="number"
+                name="phoneNumber"
+                type="text"
+                onChange={(e) => {
+                  const bdPhoneNumberRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
+                  if (bdPhoneNumberRegex.test(e.target.value)) {
+                    setError("");
+                  } else {
+                    setError("Enter Bangladeshi phone number");
+                  }
+                }}
                 placeholder="Your Contact Number"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
               />
@@ -91,7 +133,10 @@ const RegistrationPage = () => {
                 className={`${
                   role == "owner" ? "bg-primary text-white" : "bg-transparent"
                 } cursor-pointer select-none font-semibold border border-primary px-5 py-2 rounded-md`}
-                onClick={() => setRole("owner")}
+                onClick={() => {
+                  setRole("owner");
+                  setError("");
+                }}
               >
                 Owner
               </p>
@@ -99,26 +144,13 @@ const RegistrationPage = () => {
                 className={`${
                   role == "renter" ? "bg-primary text-white" : "bg-transparent"
                 } cursor-pointer select-none font-semibold border border-primary px-5 py-2 rounded-md`}
-                onClick={() => setRole("renter")}
+                onClick={() => {
+                  setRole("renter");
+                  setError("");
+                }}
               >
                 Renter
               </p>
-              {/* <input
-                name="role"
-                value="owner"
-                id="owner"
-                type="radio"
-                placeholder="Your Contact Number"
-                className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
-              />
-              <input
-                name="role"
-                value="renter"
-                id="renter"
-                type="radio"
-                placeholder="Your Contact Number"
-                className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
-              /> */}
             </div>
 
             <label htmlFor="password" className="block">
@@ -126,9 +158,21 @@ const RegistrationPage = () => {
             </label>
             <div className="relative">
               <input
-                id="pass"
+                required
+                id="password"
+                name="password"
                 type="password"
-                placeholder=".............."
+                onChange={(e) => {
+                  const regexPattern = /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/;
+                  if (regexPattern.test(e.target.value)) {
+                    console.log("a");
+                    setError("");
+                  } else {
+                    setError("Enter 8 digit password with atlest one number");
+                    console.log("b");
+                  }
+                }}
+                placeholder="********"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
               />
               <span className="absolute top-1/4 left-2">
@@ -157,7 +201,7 @@ const RegistrationPage = () => {
           {/* button type will be submit for handling form submission*/}
           <div className="flex items-center justify-between">
             <button
-              type="button"
+              type="submit"
               className="py-2 px-5 mb-4 mt-6 shadow-lg before:block before:-left-1 before:-top-1 before:bg-primary before:absolute before:h-0 before:w-0 before:hover:w-[100%] before:hover:h-[100%]  before:duration-500 before:-z-40 after:block after:-right-1 after:-bottom-1 after:bg-primary after:absolute after:h-0 after:w-0 after:hover:w-[100%] after:hover:h-[100%] after:duration-500 after:-z-40 bg-white relative inline-block"
             >
               Register
