@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Container from "./Shared/Container";
 
 const NavBar = () => {
@@ -13,9 +14,11 @@ const NavBar = () => {
             <p>Blogs</p>
           </div>
           <div className="">
-            <button className="bg-white text-primary px-4 py-1 rounded-md font-bold duration-300 active:scale-90">
-              Login
-            </button>
+            <Link to="/login">
+              <button className="bg-white text-primary px-4 py-1 rounded-md font-bold duration-300 active:scale-90">
+                Login
+              </button>
+            </Link>
           </div>
         </nav>
       </Container>
