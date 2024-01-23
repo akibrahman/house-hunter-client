@@ -45,10 +45,22 @@ const DashboardPage = () => {
               </Link>
             )}
           </div>
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex flex-col items-center justify-start">
             <p className="text-primary text-3xl font-semibold mt-5">
               My Houses
             </p>
+            <div className="flex flex-col gap-4 w-full mt-6">
+              {/* House  */}
+              <div className="flex items-center justify-around border py-2 rounded-md">
+                <img
+                  className="w-32 h-20 rounded-md"
+                  src="https://i.ibb.co/yNzBYHP/House.jpg"
+                  alt=""
+                />
+                <p>Name</p>
+                <p>50000 BDT</p>
+              </div>
+            </div>
           </div>
           <div className="flex-1 flex justify-center">
             <p className="text-primary text-3xl font-semibold mt-5">Bookings</p>

@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AddAHousePage from "./Pages/AddAHousePage";
@@ -10,6 +12,8 @@ import AuthProvider from "./Providers/AuthProvider";
 import Root from "./Root";
 import UserRoute from "./Routes/UserRoute";
 import "./index.css";
+
+const queryClient = new QueryClient();
 
 const routes = createBrowserRouter([
   {
@@ -50,8 +54,10 @@ const routes = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={routes} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={routes} />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
