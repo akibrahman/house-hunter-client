@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { FaExclamation } from "react-icons/fa";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 import Loader from "../Components/Shared/Loader";
 import useAuth from "../Hooks/useAuth";
@@ -18,7 +18,7 @@ const EditAHousePage = () => {
   const [pic, setPic] = useState();
   const [newPic, setNewPic] = useState();
   const axiosInstance = usePublicAxios();
-
+  const navigate = useNavigate();
   const { data: house, refetch } = useQuery({
     queryKey: ["house", id],
     queryFn: async ({ queryKey }) => {
@@ -95,6 +95,12 @@ const EditAHousePage = () => {
         </button>
       </div>
       <p className="text-xl text-primary font-semibold my-4 text-center">
+        <span
+          onClick={() => navigate(-1)}
+          className="mr-10 bg-primary text-white px-4 py-2 rounded-md cursor-pointer"
+        >
+          Back
+        </span>{" "}
         Add New House - {user.name}
       </p>
       <Container>

@@ -11,7 +11,9 @@ const LoginPage = () => {
     const res = await logIn(form.email.value, form.password.value);
     console.log(res);
     if (res.success) {
-      navigate("/");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 700);
     }
   };
   return (

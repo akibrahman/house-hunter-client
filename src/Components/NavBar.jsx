@@ -10,7 +10,9 @@ const NavBar = () => {
         <nav className="flex items-center justify-between font-medium py-4">
           <div className="text-2xl">House Hunter</div>
           <div className="flex items-center gap-4">
-            <p>Home</p>
+            <Link to="/">
+              <p>Home</p>
+            </Link>
             <p>About</p>
             <p>Contact</p>
             <p>Blogs</p>

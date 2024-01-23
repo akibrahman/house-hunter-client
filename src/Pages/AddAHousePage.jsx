@@ -86,7 +86,14 @@ const AddAHousePage = () => {
           <span>Log Out</span>
         </button>
       </div>
+
       <p className="text-xl text-primary font-semibold my-4 text-center">
+        <span
+          onClick={() => navigate(-1)}
+          className="mr-10 bg-primary text-white px-4 py-2 rounded-md cursor-pointer"
+        >
+          Back
+        </span>{" "}
         Add New House - {user.name}
       </p>
       <Container>

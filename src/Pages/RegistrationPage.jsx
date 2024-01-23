@@ -39,7 +39,9 @@ const RegistrationPage = () => {
     const { data } = await axiosInstance.post("/user/add", user);
     if (data.success) {
       setAuthReloader(!authReloader);
-      navigate("/");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 700);
     }
   };
   return (

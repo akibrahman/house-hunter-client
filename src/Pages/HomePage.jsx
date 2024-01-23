@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 import usePublicAxios from "../Hooks/usePublicAxios";
 
@@ -91,9 +92,11 @@ const HomePage = () => {
                     </span>
                     BDT
                   </p>
-                  <button className="font-semibold text-white bg-primary px-4 py-1 rounded-full">
-                    Details
-                  </button>
+                  <Link to={`/details/${house._id}`}>
+                    <button className="font-semibold text-white bg-primary px-4 py-1 rounded-full">
+                      Details
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}

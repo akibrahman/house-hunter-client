@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AddAHousePage from "./Pages/AddAHousePage";
 import DashboardPage from "./Pages/DashboardPage";
+import DetailsPage from "./Pages/DetailsPage";
 import EditAHousePage from "./Pages/EditAHousePage";
 import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
@@ -24,6 +25,10 @@ const routes = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/details/:id",
+        element: <DetailsPage />,
       },
     ],
   },
