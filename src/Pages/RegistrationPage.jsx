@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { FaExclamation, FaPhoneAlt } from "react-icons/fa";
 import { FaClipboardUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../Components/Shared/Container";
+import useAuth from "../Hooks/useAuth";
 import usePublicAxios from "../Hooks/usePublicAxios";
 
 const RegistrationPage = () => {
+  const { authReloader, setAuthReloader } = useAuth();
+  const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const axiosInstance = usePublicAxios();
@@ -35,7 +38,8 @@ const RegistrationPage = () => {
     };
     const { data } = await axiosInstance.post("/user/add", user);
     if (data.success) {
-      alert("Ok");
+      setAuthReloader(!authReloader);
+      navigate("/");
     }
   };
   return (

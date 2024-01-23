@@ -6,6 +6,9 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const axiosInstance = usePublicAxios();
   const [user, setUser] = useState(null);
+  const [authReloader, setAuthReloader] = useState(true);
+
+  //! User
   const getUser = async () => {
     const { data } = await axiosInstance.get("/user/find");
     if (data.status) {
@@ -16,9 +19,30 @@ const AuthProvider = ({ children }) => {
   };
   useEffect(() => {
     getUser();
-  }, []);
+  }, [authReloader]);
 
-  const authInfo = { user };
+  //! LogOut
+  const logOut = async () => {
+    await axiosInstance.get("/user/logout");
+    setAuthReloader(!authReloader);
+  };
+
+  //! LogIn
+  const logIn = async (email, password) => {
+    const { data } = await axiosInstance.post("/user/login", {
+      email,
+      password,
+    });
+    if (data.status) {
+      setAuthReloader(!authReloader);
+      return { success: true };
+    } else {
+      alert(data.msg);
+      setAuthReloader(!authReloader);
+      return { success: false };
+    }
+  };
+  const authInfo = { user, logOut, authReloader, setAuthReloader, logIn };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

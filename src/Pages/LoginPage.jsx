@@ -1,11 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../Components/Shared/Container";
+import useAuth from "../Hooks/useAuth";
 
 const LoginPage = () => {
+  const { logIn } = useAuth();
+  const navigate = useNavigate();
+  const handleLogIn = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const res = await logIn(form.email.value, form.password.value);
+    console.log(res);
+    if (res.success) {
+      navigate("/");
+    }
+  };
   return (
     <Container className={"flex items-center justify-center h-screen"}>
       <div className="w-full mx-auto lg:w-[500px] drop-shadow-lg bg-white shadow-primary">
-        <form className="p-12">
+        <form onSubmit={handleLogIn} className="p-12">
           <h1 className="backdrop-blur-sm text-4xl pb-8">Login</h1>
           <div className="space-y-5">
             <label htmlFor="email" className="block">
@@ -13,7 +25,9 @@ const LoginPage = () => {
             </label>
             <div className="relative">
               <input
+                required
                 id="email"
+                name="email"
                 type="email"
                 placeholder="example@gmail.com"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
@@ -55,9 +69,11 @@ const LoginPage = () => {
             </label>
             <div className="relative">
               <input
-                id="pass"
+                required
+                id="password"
+                name="password"
                 type="password"
-                placeholder=".............."
+                placeholder="********"
                 className="p-3 block w-full pl-10 drop-shadow-lg outline-none"
               />
               <span className="absolute top-1/4 left-2">
@@ -86,7 +102,7 @@ const LoginPage = () => {
           {/* button type will be submit for handling form submission*/}
           <div className="flex items-center justify-between">
             <button
-              type="button"
+              type="submit"
               className="py-2 px-5 mb-4 mt-6 shadow-lg before:block before:-left-1 before:-top-1 before:bg-primary before:absolute before:h-0 before:w-0 before:hover:w-[100%] before:hover:h-[100%]  before:duration-500 before:-z-40 after:block after:-right-1 after:-bottom-1 after:bg-primary after:absolute after:h-0 after:w-0 after:hover:w-[100%] after:hover:h-[100%] after:duration-500 after:-z-40 bg-white relative inline-block"
             >
               Login
