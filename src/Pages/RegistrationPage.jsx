@@ -3,11 +3,13 @@ import { FaExclamation, FaPhoneAlt } from "react-icons/fa";
 import { FaClipboardUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
+import usePublicAxios from "../Hooks/usePublicAxios";
 
 const RegistrationPage = () => {
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
-  const handleRegistration = (event) => {
+  const axiosInstance = usePublicAxios();
+  const handleRegistration = async (event) => {
     event.preventDefault();
     if (!role) {
       setError("Identify your Role");
@@ -24,7 +26,17 @@ const RegistrationPage = () => {
       setError("Enter 8 digit password with atlest one number");
       return;
     }
-    console.log(form.fullName.value);
+    const user = {
+      name: form.fullName.value,
+      email: form.email.value,
+      phone: form.phoneNumber.value,
+      role,
+      password: form.password.value,
+    };
+    const { data } = await axiosInstance.post("/user/add", user);
+    if (data.success) {
+      alert("Ok");
+    }
   };
   return (
     <Container className={"flex items-center justify-center h-screen relative"}>
@@ -165,11 +177,9 @@ const RegistrationPage = () => {
                 onChange={(e) => {
                   const regexPattern = /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/;
                   if (regexPattern.test(e.target.value)) {
-                    console.log("a");
                     setError("");
                   } else {
                     setError("Enter 8 digit password with atlest one number");
-                    console.log("b");
                   }
                 }}
                 placeholder="********"
