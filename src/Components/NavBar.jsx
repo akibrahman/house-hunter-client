@@ -3,7 +3,7 @@ import useAuth from "../Hooks/useAuth";
 import Container from "./Shared/Container";
 
 const NavBar = () => {
-  const { user, logOut } = useAuth();
+  const { user } = useAuth();
   return (
     <div className="bg-primary text-white">
       <Container>
@@ -17,12 +17,14 @@ const NavBar = () => {
           </div>
           <div className="">
             {user ? (
-              <button
-                onClick={logOut}
-                className="z-20 text-xl w-28 h-10 rounded-full before:block before:absolute before:inset-0 before:bg-sky-600 before:duration-500 after:duration-500 duration-300 hover:before:skew-y-12 after:block after:absolute after:inset-0 after:bg-white hover:after:-skew-y-12 before:-z-10 after:-z-10 inline-block relative text-primary font-medium"
-              >
-                <span>Log Out</span>
-              </button>
+              <Link to="/dashboard">
+                <button
+                  // onClick={logOut}
+                  className="z-20 text-xl w-32 h-10 rounded-full before:block before:absolute before:inset-0 before:bg-sky-600 before:duration-500 after:duration-500 duration-300 hover:before:skew-y-12 after:block after:absolute after:inset-0 after:bg-white hover:after:-skew-y-12 before:-z-10 after:-z-10 inline-block relative text-primary font-medium"
+                >
+                  <span>Dashboard</span>
+                </button>
+              </Link>
             ) : (
               <Link to="/login">
                 <button className="z-20 text-xl w-28 h-10 rounded-full before:block before:absolute before:inset-0 before:bg-sky-600 before:duration-500 after:duration-500 duration-300 hover:before:skew-y-12 after:block after:absolute after:inset-0 after:bg-white hover:after:-skew-y-12 before:-z-10 after:-z-10 inline-block relative text-primary font-medium">

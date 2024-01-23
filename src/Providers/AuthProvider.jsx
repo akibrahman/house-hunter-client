@@ -6,6 +6,7 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const axiosInstance = usePublicAxios();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [authReloader, setAuthReloader] = useState(true);
 
   //! User
@@ -16,6 +17,7 @@ const AuthProvider = ({ children }) => {
     } else {
       setUser(null);
     }
+    setLoading(false);
   };
   useEffect(() => {
     getUser();
@@ -42,7 +44,14 @@ const AuthProvider = ({ children }) => {
       return { success: false };
     }
   };
-  const authInfo = { user, logOut, authReloader, setAuthReloader, logIn };
+  const authInfo = {
+    user,
+    logOut,
+    authReloader,
+    setAuthReloader,
+    logIn,
+    loading,
+  };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

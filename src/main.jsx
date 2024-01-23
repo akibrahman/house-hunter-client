@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AddAHousePage from "./Pages/AddAHousePage";
+import DashboardPage from "./Pages/DashboardPage";
 import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
 import AuthProvider from "./Providers/AuthProvider";
 import Root from "./Root";
+import UserRoute from "./Routes/UserRoute";
 import "./index.css";
 
 const routes = createBrowserRouter([
@@ -26,6 +29,22 @@ const routes = createBrowserRouter([
   {
     path: "/registration",
     element: <RegistrationPage />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <UserRoute>
+        <DashboardPage />
+      </UserRoute>
+    ),
+  },
+  {
+    path: "/add-a-house",
+    element: (
+      <UserRoute>
+        <AddAHousePage />
+      </UserRoute>
+    ),
   },
 ]);
 
