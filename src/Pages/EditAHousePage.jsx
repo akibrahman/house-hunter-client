@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { FaExclamation } from "react-icons/fa";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 import Loader from "../Components/Shared/Loader";
 import useAuth from "../Hooks/useAuth";
@@ -12,7 +12,6 @@ import { imageUpload } from "../Utils/imageUpload";
 import { makeFile } from "../Utils/makeFile";
 const EditAHousePage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { user, logOut } = useAuth();
   const [date, setDate] = useState();
   const [error, setError] = useState();

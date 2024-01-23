@@ -3,6 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import Container from "../Components/Shared/Container";
 import Loader from "../Components/Shared/Loader";
 import useAuth from "../Hooks/useAuth";
@@ -11,7 +12,7 @@ import usePublicAxios from "../Hooks/usePublicAxios";
 const DashboardPage = () => {
   const { user, logOut } = useAuth();
   const axiosInstance = usePublicAxios();
-  const { data: houses } = useQuery({
+  const { data: houses, refetch } = useQuery({
     queryKey: ["houses", user.email],
     queryFn: async ({ queryKey }) => {
       const { data } = await axiosInstance.get(
@@ -86,7 +87,34 @@ const DashboardPage = () => {
                     <Link to={`/edit-a-house/${house._id}`}>
                       <TiEdit className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-orange-600 text-4xl p-2 rounded-full" />
                     </Link>
-                    <MdDelete className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-red-600 text-4xl p-2 rounded-full" />
+                    <MdDelete
+                      onClick={async () => {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            const { data } = await axiosInstance.delete(
+                              `/house/delete/${house._id}`
+                            );
+                            if (data.success) {
+                              await refetch();
+                              Swal.fire({
+                                title: "Deleted!",
+                                text: "Your House has been deleted.",
+                                icon: "success",
+                              });
+                            }
+                          }
+                        });
+                      }}
+                      className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-red-600 text-4xl p-2 rounded-full"
+                    />
                     <FaArrowRight className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-primary text-4xl p-2 rounded-full" />
                   </div>
                 </div>
