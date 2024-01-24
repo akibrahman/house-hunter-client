@@ -5,17 +5,25 @@ import { Link, useNavigate } from "react-router-dom";
 import Container from "../Components/Shared/Container";
 import useAuth from "../Hooks/useAuth";
 import usePublicAxios from "../Hooks/usePublicAxios";
+import { base64 } from "../Utils/base64";
+import { imageUpload } from "../Utils/imageUpload";
+import { makeFile } from "../Utils/makeFile";
 
 const RegistrationPage = () => {
   const { authReloader, setAuthReloader } = useAuth();
   const navigate = useNavigate();
   const [role, setRole] = useState("");
+  const [pic, setPic] = useState("");
   const [error, setError] = useState("");
   const axiosInstance = usePublicAxios();
   const handleRegistration = async (event) => {
     event.preventDefault();
     if (!role) {
       setError("Identify your Role");
+      return;
+    }
+    if (!pic) {
+      setError("Add Profile Picture");
       return;
     }
     const form = event.target;
@@ -29,11 +37,14 @@ const RegistrationPage = () => {
       setError("Enter 8 digit password with atlest one number");
       return;
     }
+    const pFile = await makeFile(pic, "ProPic,", "image/*");
+    const url = await imageUpload(pFile);
     const user = {
       name: form.fullName.value,
       email: form.email.value,
       phone: form.phoneNumber.value,
       role,
+      profilePicture: url,
       password: form.password.value,
     };
     const { data } = await axiosInstance.post("/user/add", user);
@@ -120,6 +131,27 @@ const RegistrationPage = () => {
               </span>
             </div>
 
+            <div className="flex items-center justify-center gap-10">
+              <label
+                htmlFor="propic"
+                className="inline-block w-max bg-primary text-white font-semibold px-4 py-2 rounded-full duration-300 active:scale-90"
+              >
+                Profile Picture
+              </label>
+              {pic && (
+                <img src={pic} className="rounded-full w-12 h-12" alt="" />
+              )}
+              <input
+                className="hidden"
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const base = await base64(e.target.files[0]);
+                  setPic(base);
+                }}
+                id="propic"
+              />
+            </div>
             <label htmlFor="phoneNumber" className="block">
               Phone Number
             </label>
@@ -146,7 +178,7 @@ const RegistrationPage = () => {
             </div>
 
             <label className="block">Role</label>
-            <div className="relative flex ic justify-around">
+            <div className="relative flex items-center justify-around">
               <p
                 className={`${
                   role == "owner" ? "bg-primary text-white" : "bg-transparent"

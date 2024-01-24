@@ -64,7 +64,7 @@ const DashboardPage = () => {
             <p className="text-primary text-3xl font-semibold mt-5">Profile</p>
             <img
               className="rounded-full w-56 h-56 my-6"
-              src="https://i.ibb.co/K9MC2KR/Linkdin1.jpg"
+              src={user.profilePicture}
               alt=""
             />
             <p>{user.name}</p>

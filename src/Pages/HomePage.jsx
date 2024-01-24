@@ -3,6 +3,7 @@ import MultiRangeSlider from "multi-range-slider-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
+import Pagination from "../Components/Shared/Pagination";
 import usePublicAxios from "../Hooks/usePublicAxios";
 
 const HomePage = () => {
@@ -11,20 +12,31 @@ const HomePage = () => {
   const [city, setCity] = useState("");
   const [bedroom, setBedroom] = useState("");
   const [bathroom, setBathroom] = useState("");
-  const [size, setSize] = useState("");
   const [min, setMin] = useState(10000);
   const [max, setMax] = useState(200000);
+  const [page, setPage] = useState(0);
 
   const { data: houses } = useQuery({
-    queryKey: ["filtered-houses", title, city, bedroom, bathroom, min, max],
+    queryKey: [
+      "filtered-houses",
+      title,
+      city,
+      bedroom,
+      bathroom,
+      min,
+      max,
+      page,
+    ],
     queryFn: async ({ queryKey }) => {
       const { data } = await axiosInstance.get(
-        `/house/filtered-houses?title=${queryKey[1]}&city=${queryKey[2]}&bedroom=${queryKey[3]}&bathroom=${queryKey[4]}&min=${queryKey[5]}&max=${queryKey[6]}`
+        `/house/filtered-houses?title=${queryKey[1]}&city=${queryKey[2]}&bedroom=${queryKey[3]}&bathroom=${queryKey[4]}&min=${queryKey[5]}&max=${queryKey[6]}&page=${queryKey[7]}`
       );
       return data;
     },
   });
-  console.log(houses);
+  const totalPages = Math.ceil(houses?.countt / 10);
+  const pages = [...new Array(totalPages ? totalPages : 0).fill(0)];
+  console.log(pages);
   return (
     <Container>
       <div className="my-6">
@@ -85,9 +97,9 @@ const HomePage = () => {
           </div>
         </div>
         {/* Houses  */}
-        {houses && houses.length > 0 ? (
+        {houses && houses.houses.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 mt-10">
-            {houses.map((house) => (
+            {houses.houses.map((house) => (
               <div key={house._id} className="border py-5 rounded-md">
                 <div className="flex justify-center gap-6">
                   <img
@@ -137,6 +149,12 @@ const HomePage = () => {
         ) : (
           <p>No Result</p>
         )}
+        <Pagination
+          page={page}
+          setPage={setPage}
+          pages={pages}
+          totalPages={totalPages}
+        />
       </div>
     </Container>
   );
