@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { FaExclamation, FaPhoneAlt } from "react-icons/fa";
+import { FaExclamation, FaPhoneAlt, FaSpinner } from "react-icons/fa";
 import { FaClipboardUser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Container from "../Components/Shared/Container";
 import useAuth from "../Hooks/useAuth";
 import usePublicAxios from "../Hooks/usePublicAxios";
@@ -11,6 +12,7 @@ import { makeFile } from "../Utils/makeFile";
 
 const RegistrationPage = () => {
   const { authReloader, setAuthReloader } = useAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [pic, setPic] = useState("");
@@ -37,6 +39,7 @@ const RegistrationPage = () => {
       setError("Enter 8 digit password with atlest one number");
       return;
     }
+    setLoading(true);
     const pFile = await makeFile(pic, "ProPic,", "image/*");
     const url = await imageUpload(pFile);
     const user = {
@@ -50,10 +53,12 @@ const RegistrationPage = () => {
     const { data } = await axiosInstance.post("/user/add", user);
     if (data.success) {
       setAuthReloader(!authReloader);
+      toast.success("Registration Success");
       setTimeout(() => {
         navigate("/dashboard");
       }, 700);
     }
+    setLoading(false);
   };
   return (
     <Container className={"flex items-center justify-center h-screen relative"}>
@@ -254,6 +259,7 @@ const RegistrationPage = () => {
             >
               Register
             </button>
+            {loading && <FaSpinner className="animate-spin" />}
             <Link to="/login">
               <p className="text-primary font-semibold hover:underline cursor-pointer">
                 Login

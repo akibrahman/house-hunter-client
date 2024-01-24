@@ -1,7 +1,8 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
-import { FaExclamation } from "react-icons/fa";
+import { FaExclamation, FaSpinner } from "react-icons/fa";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Container from "../Components/Shared/Container";
 import useAuth from "../Hooks/useAuth";
 import usePublicAxios from "../Hooks/usePublicAxios";
@@ -15,6 +16,7 @@ const AddAHousePage = () => {
   const [error, setError] = useState();
   const [pic, setPic] = useState();
   const axiosInstance = usePublicAxios();
+  const [loading, setLoading] = useState(false);
 
   const addHouse = async (event) => {
     event.preventDefault();
@@ -30,7 +32,7 @@ const AddAHousePage = () => {
       return;
     }
     setError("");
-
+    setLoading(true);
     const form = event.target;
     const imageFile = await makeFile(pic, "House", "image/*");
     const url = await imageUpload(imageFile);
@@ -55,7 +57,8 @@ const AddAHousePage = () => {
       setError();
       setPic();
       form.reset();
-      alert("Room Added");
+      toast.success("House Added Successfully");
+      setLoading(false);
       navigate("/dashboard");
     }
   };
@@ -265,12 +268,16 @@ const AddAHousePage = () => {
               ></textarea>
             </div>
           </div>
-          <button
-            // onClick={logOut}
-            className="z-20 text-xl w-32 h-10 rounded-full before:block before:absolute before:inset-0 before:bg-sky-600 before:duration-500 after:duration-500 duration-300 hover:before:skew-y-12 after:block after:absolute after:inset-0 after:bg-primary hover:after:-skew-y-12 before:-z-10 after:-z-10 inline-block relative text-white font-medium"
-          >
-            <span>Add</span>
-          </button>
+          {loading ? (
+            <FaSpinner className="animate-spin" />
+          ) : (
+            <button
+              // onClick={logOut}
+              className="z-20 text-xl w-32 h-10 rounded-full before:block before:absolute before:inset-0 before:bg-sky-600 before:duration-500 after:duration-500 duration-300 hover:before:skew-y-12 after:block after:absolute after:inset-0 after:bg-primary hover:after:-skew-y-12 before:-z-10 after:-z-10 inline-block relative text-white font-medium"
+            >
+              <span>Add</span>
+            </button>
+          )}
         </form>
       </Container>
     </div>

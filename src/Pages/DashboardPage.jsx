@@ -136,7 +136,10 @@ const DashboardPage = () => {
                         }}
                         className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-red-600 text-4xl p-2 rounded-full"
                       />
-                      <FaArrowRight className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-primary text-4xl p-2 rounded-full" />
+                      <Link to={`/details/${house._id}`}>
+                        {" "}
+                        <FaArrowRight className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-primary text-4xl p-2 rounded-full" />{" "}
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -200,7 +203,6 @@ const DashboardPage = () => {
                         }}
                         className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-red-600 text-4xl p-2 rounded-full"
                       />
-                      <FaArrowRight className="text-white duration-300 select-none cursor-pointer active:scale-90 bg-primary text-4xl p-2 rounded-full" />
                     </div>
                   </div>
                 ))}

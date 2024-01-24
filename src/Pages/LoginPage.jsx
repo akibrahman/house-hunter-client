@@ -1,20 +1,26 @@
+import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Container from "../Components/Shared/Container";
 import useAuth from "../Hooks/useAuth";
 
 const LoginPage = () => {
   const { logIn } = useAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleLogIn = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const form = event.target;
     const res = await logIn(form.email.value, form.password.value);
-    console.log(res);
     if (res.success) {
+      toast.success("LogIn Successful");
       setTimeout(() => {
         navigate("/dashboard");
       }, 700);
     }
+    setLoading(false);
   };
   return (
     <Container className={"flex items-center justify-center h-screen"}>
@@ -114,6 +120,7 @@ const LoginPage = () => {
                 Registration
               </p>
             </Link>
+            {loading && <FaSpinner className="animate-spin" />}
           </div>
         </form>
       </div>

@@ -97,7 +97,7 @@ const HomePage = () => {
           </div>
         </div>
         {/* Houses  */}
-        {houses && houses.houses.length > 0 ? (
+        {houses && houses?.houses?.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 mt-10">
             {houses.houses.map((house) => (
               <div key={house._id} className="border py-5 rounded-md">

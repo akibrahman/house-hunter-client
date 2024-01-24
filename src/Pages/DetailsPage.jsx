@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Container from "../Components/Shared/Container";
 import Loader from "../Components/Shared/Loader";
 import useAuth from "../Hooks/useAuth";
@@ -43,10 +44,6 @@ const DetailsPage = () => {
     if (error) {
       return;
     }
-    if (user.role == "owner") {
-      alert("Your are not a Renter");
-      return;
-    }
     console.log(e.target.phone.value);
     const { data } = await axiosInstance.post("/booking/add", {
       ...house,
@@ -58,7 +55,7 @@ const DetailsPage = () => {
       setOpen(false);
       await refetchBC();
       await refetchBB();
-      alert("Booking Done");
+      toast.success("Booking Confirmed");
     }
   };
   if (!house || !bookingCount) return <Loader />;
@@ -133,8 +130,16 @@ const DetailsPage = () => {
         ) : (
           <button
             onClick={() => {
+              if (!user) {
+                toast.info("Login First to Book");
+                return;
+              }
+              if (user.role == "owner") {
+                toast.info("You are not a Renter");
+                return;
+              }
               if (bookingCount.length >= 2) {
-                alert("Alredy Booked 2 Houses");
+                toast.info("Alredy Booked 2 Houses");
                 return;
               }
               setOpen(true);

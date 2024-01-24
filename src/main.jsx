@@ -3,6 +3,8 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AddAHousePage from "./Pages/AddAHousePage";
 import DashboardPage from "./Pages/DashboardPage";
 import DetailsPage from "./Pages/DetailsPage";
@@ -70,6 +72,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ToastContainer position="top-left" autoClose={2000} />
         <RouterProvider router={routes} />
       </AuthProvider>
     </QueryClientProvider>

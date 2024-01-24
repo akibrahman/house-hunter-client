@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import usePublicAxios from "../Hooks/usePublicAxios";
 
 export const AuthContext = createContext(null);
@@ -26,6 +27,7 @@ const AuthProvider = ({ children }) => {
   //! LogOut
   const logOut = async () => {
     await axiosInstance.get("/user/logout");
+    toast.success("Logout Successful");
     setAuthReloader(!authReloader);
   };
 
@@ -39,7 +41,7 @@ const AuthProvider = ({ children }) => {
       setAuthReloader(!authReloader);
       return { success: true };
     } else {
-      alert(data.msg);
+      toast.error(data.msg);
       setAuthReloader(!authReloader);
       return { success: false };
     }
