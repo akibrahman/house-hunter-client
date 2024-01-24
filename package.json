@@ -14,6 +14,7 @@
     "axios": "^1.6.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.3",
+    "multi-range-slider-react": "^2.0.7",
     "react": "^18.2.0",
     "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",

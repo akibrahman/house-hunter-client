@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import MultiRangeSlider from "multi-range-slider-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../Components/Shared/Container";
@@ -11,12 +12,14 @@ const HomePage = () => {
   const [bedroom, setBedroom] = useState("");
   const [bathroom, setBathroom] = useState("");
   const [size, setSize] = useState("");
+  const [min, setMin] = useState(10000);
+  const [max, setMax] = useState(200000);
 
   const { data: houses } = useQuery({
-    queryKey: ["filtered-houses", title, city, bedroom, bathroom, size],
+    queryKey: ["filtered-houses", title, city, bedroom, bathroom, min, max],
     queryFn: async ({ queryKey }) => {
       const { data } = await axiosInstance.get(
-        `/house/filtered-houses?title=${queryKey[1]}&city=${queryKey[2]}&bedroom=${queryKey[3]}&bathroom=${queryKey[4]}&size=${queryKey[5]}`
+        `/house/filtered-houses?title=${queryKey[1]}&city=${queryKey[2]}&bedroom=${queryKey[3]}&bathroom=${queryKey[4]}&min=${queryKey[5]}&max=${queryKey[6]}`
       );
       return data;
     },
@@ -50,6 +53,36 @@ const HomePage = () => {
             type="text"
             onChange={(e) => setBathroom(e.target.value)}
           />
+        </div>
+
+        <div className="w-[500px] mx-auto mt-8">
+          <MultiRangeSlider
+            min={10000}
+            minValue={10000}
+            max={200000}
+            maxValue={200000}
+            canMinMaxValueSame={true}
+            // onInput={(e: ChangeResult) => {
+            //   setMinValue(e.minValue);
+            //   setMaxValue(e.maxValue);
+            // }}
+            onChange={(e) => {
+              setMin(e.minValue);
+              setMax(e.maxValue);
+            }}
+            label={false}
+            ruler={false}
+            style={{ border: "none", boxShadow: "none", padding: "15px 10px" }}
+            barLeftColor="#162C46"
+            barInnerColor="#162C46"
+            barRightColor="#162C46"
+            thumbLeftColor="#162C46"
+            thumbRightColor="#162C46"
+          />
+          <div className="flex items-center justify-between">
+            <p>Min: {min}</p>
+            <p>Max: {max}</p>
+          </div>
         </div>
         {/* Houses  */}
         {houses && houses.length > 0 ? (
